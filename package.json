@@ -1,0 +1,23 @@
+{
+  "name": "workflow-base-template",
+  "version": "1.0.0",
+  "description": "The most basic workflow template for a Kinde Workflow",
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "kinde",
+    "auth",
+    "workflows",
+    "typescript"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@kinde/infrastructure": "0.6.0"
+  }
+}
