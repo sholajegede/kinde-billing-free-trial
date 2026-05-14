@@ -2,15 +2,36 @@ import {
   onPostAuthenticationEvent,
   WorkflowSettings,
   WorkflowTrigger,
+  createKindeAPI,
 } from "@kinde/infrastructure";
 
-// The setting for this workflow
 export const workflowSettings: WorkflowSettings = {
-  id: "onPostUserAuthentication",
+  id: "trialStartWorkflow",
+  name: "Stamp trial start date",
+  failurePolicy: { action: "continue" },
+  bindings: {
+    "kinde.fetch": {},
+  },
   trigger: WorkflowTrigger.PostAuthentication,
 };
 
-// The workflow code to be executed when the event is triggered
 export default async function Workflow(event: onPostAuthenticationEvent) {
-  console.log("Hello world");
+  if (event.context.isExistingUser) {
+    return;
+  }
+
+  const userId = event.context.user.id;
+  const trialStart = Math.floor(Date.now() / 1000).toString();
+
+  const kindeAPI = await createKindeAPI(event);
+
+  await kindeAPI.patch({
+    endpoint: `user`,
+    params: { id: userId },
+    requestBody: {
+      properties: {
+        trial_start: trialStart,
+      },
+    },
+  });
 }
